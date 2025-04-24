@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+#mqtt:
+#  broker-url: tcp://broker.emqx.io:1883  # 公共测试服务器
+#  client-id: springboot-server-${random.uuid}
+#  username:  # 如果有认证
+#  password:  # 如果有认证
+#  default-topic: vehicles/command  # 发送指令的默认主题
+#  qos: 1  # 服务质量等级
