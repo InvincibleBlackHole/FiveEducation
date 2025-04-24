@@ -1,0 +1,40 @@
+name: Auto Deploy
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 拉取代码
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 构建后端
+      - name: Build and push backend
+        working-directory: ./car-mqtt
+        run: |
+          docker build -t your-dockerhub-username/car-mqtt:latest .
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          docker push your-dockerhub-username/car-mqtt:latest
+
+      # 构建前端
+      - name: Build and push frontend
+        working-directory: ./vuetify-project
+        run: |
+          docker build -t your-dockerhub-username/vuetify-project:latest .
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          docker push your-dockerhub-username/vuetify-project:latest
+
+      # 服务器端部署
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d

@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./car-mqtt
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    restart: unless-stopped
+
+  frontend:
+    build: ./vuetify-project
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
