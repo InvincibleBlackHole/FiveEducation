@@ -13,19 +13,19 @@ jobs:
 
       # 构建后端
       - name: Build and push backend
-        working-directory: ./car-mqtt
+        working-directory: ./car-mqtt  # 确保仓库根目录下有 car-mqtt 子目录
         run: |
-          docker build -t your-dockerhub-username/car-mqtt:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/car-mqtt:latest .  # 使用 Secrets 中的用户名
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker push your-dockerhub-username/car-mqtt:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/car-mqtt:latest
 
       # 构建前端
       - name: Build and push frontend
-        working-directory: ./vuetify-project
+        working-directory: ./vuetify-project  # 确保仓库根目录下有 vuetify-project 子目录
         run: |
-          docker build -t your-dockerhub-username/vuetify-project:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/vuetify-project:latest .  # 使用 Secrets 中的用户名
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker push your-dockerhub-username/vuetify-project:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/vuetify-project:latest
 
       # 服务器端部署
       - name: Deploy to server
@@ -35,6 +35,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            cd /www/cicd_wuyu/newTest/FiveEducation  # 关键！切换到服务器上的项目目录
             docker-compose pull
             docker-compose down
             docker-compose up -d
