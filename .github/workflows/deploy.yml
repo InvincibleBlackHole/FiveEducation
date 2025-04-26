@@ -36,9 +36,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /www/cicd_wuyu/newTest/FiveEducation  # 关键！切换到服务器上的项目目录
-            echo "DOCKER_USERNAME=$DOCKER_USERNAME" >> .env  # 动态写入变量
-            env:
-              DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}  # 从 Secrets 获取
             docker-compose pull
             docker-compose down
             docker-compose up -d
