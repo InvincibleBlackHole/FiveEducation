@@ -1,12 +1,9 @@
-version: '3.8'
-
 services:
   backend:
-    # 镜像名称需要与 GitHub Actions 中推送的名称一致
-    image: $DOCKER_USERNAME/car-mqtt:latest
-    build: 
-      context: /www/cicd_wuyu/newTest/FiveEducation
-      dockerfile: ./car-mqtt/Dockerfile  # 明确指定 Dockerfile 路径
+    image: ${DOCKER_USERNAME}/car-mqtt:latest  # 使用环境变量
+    build:
+      context: .  # 使用相对路径
+      dockerfile: ./car-mqtt/Dockerfile
     ports:
       - "9080:8080"
     environment:
@@ -14,11 +11,10 @@ services:
     restart: unless-stopped
 
   frontend:
-    # 镜像名称需要与 GitHub Actions 中推送的名称一致
-    image: $DOCKER_USERNAME/vuetify-project:latest
+    image: ${DOCKER_USERNAME}/vuetify-project:latest
     build:
-      context: /www/cicd_wuyu/newTest/FiveEducation
-      dockerfile: ./vuetify-project/Dockerfile  # 明确指定 Dockerfile 路径
+      context: .
+      dockerfile: ./vuetify-project/Dockerfile
     ports:
       - "80:80"
     depends_on:
