@@ -8,7 +8,7 @@ services:
       context: /www/cicd_wuyu/newTest/FiveEducation
       dockerfile: ./car-mqtt/Dockerfile  # 明确指定 Dockerfile 路径
     ports:
-      - "8081:8080"
+      - "9080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
     restart: unless-stopped
