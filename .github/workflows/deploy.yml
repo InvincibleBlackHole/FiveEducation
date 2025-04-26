@@ -35,7 +35,17 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /www/cicd_wuyu/newTest/FiveEducation  # 关键！切换到服务器上的项目目录
-            docker-compose pull
-            docker-compose down
-            docker-compose up -d
+            cd /www/cicd_wuyu/newTest/FiveEducation
+            # 1. 将 DOCKER_USERNAME 写入服务器的 .env 文件
+            echo "DOCKER_USERNAME=$DOCKER_USERNAME" > .env
+            # 2. 清理旧容器和网络
+            docker compose down
+            # 3. 拉取最新镜像（如果镜像已推送到 Docker Hub）
+            docker compose pull
+            # 4. 强制重新构建镜像（如果镜像未推送，需本地构建）
+            docker compose build --no-cache
+            # 5. 启动新容器
+            docker compose up -d
+            # 传递 DOCKER_USERNAME 环境变量到服务器
+            env:
+              DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
