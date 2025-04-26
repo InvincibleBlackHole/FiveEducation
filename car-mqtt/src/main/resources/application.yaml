@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 #mqtt:
 #  broker-url: tcp://broker.emqx.io:1883  # 公共测试服务器
