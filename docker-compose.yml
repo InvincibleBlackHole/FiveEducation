@@ -2,8 +2,8 @@ services:
   backend:
     image: ${DOCKER_USERNAME}/car-mqtt:latest  # 使用环境变量
     build:
-      context: .  # 使用相对路径
-      dockerfile: ./car-mqtt/Dockerfile
+      context: ./car-mqtt  # 将上下文切换为 car-mqtt 目录
+      dockerfile: Dockerfile  # 直接使用该目录下的 Dockerfile
     ports:
       - "9080:8080"
     environment:
