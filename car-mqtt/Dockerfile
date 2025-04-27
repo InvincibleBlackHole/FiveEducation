@@ -5,7 +5,7 @@ FROM maven:3.8.6-jdk-8 AS build
 WORKDIR /app
 
 # 复制 pom.xml 和源代码到容器的工作目录
-COPY pom.xml ./
+COPY pom.xml .
 COPY src ./src
 
 # 构建项目
