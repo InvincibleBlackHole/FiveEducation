@@ -14,5 +14,5 @@ RUN mvn clean package -DskipTests
 # 运行阶段（使用 JDK 8）
 FROM openjdk:8-jdk-slim
 COPY --from=build /app/target/*.jar app.jar
-EXPOSE 8080
+EXPOSE 9180
 ENTRYPOINT ["java", "-jar", "app.jar"]
