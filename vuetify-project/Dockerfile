@@ -6,8 +6,10 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# 运行阶段（使用 Nginx）
 FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
+# 复制构建好的前端静态文件
+COPY dist/ /usr/share/nginx/html
+# 覆盖默认 Nginx 配置
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+# 声明容器监听端口（可选，实际端口由 docker-compose 映射）
 EXPOSE 9080
